@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jdatabaseauth
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      containers:
+      - name: jdatabaseauth
+        image: masterarbeithhz/thesis:mysqlJobAuthenticationv2
+        args:
+        - /bin/bash
+        - -c
+        - /opt/gcSession.sh mysqlauth-service root Philipp1
+      restartPolicy: Never

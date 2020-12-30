@@ -1,0 +1,65 @@
+#MySQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqlauth-service
+  labels:
+    app: mysqlauth
+  namespace: default
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysqlauth
+---
+#MySQL PV
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim-authentication2
+  labels:
+    app: mysqlauth
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+#MySQL Container
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysqlauth
+  labels:
+    app: mysqlauth
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: mysqlauth
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysqlauth
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysqlauth
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "Philipp1"
+        ports:
+        - containerPort: 3306
+          name: mysqlauth
+        volumeMounts:
+        - name: mysql-persistent-storage-authentication
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage-authentication
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim-authentication2
+
