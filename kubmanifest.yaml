@@ -1,11 +1,17 @@
+#Definition Namespace für alle Ressourcen
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: JSVAR_NAMESPACE
+---
 #MySQL Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysqlauth-service
+  name: JSVAR_BA_DBNAME
   labels:
     app: mysqlauth
-  namespace: default
+  namespace: JSVAR_NAMESPACE
 spec:
   ports:
   - port: 3306
@@ -19,7 +25,7 @@ metadata:
   name: mysql-pv-claim-authentication2
   labels:
     app: mysqlauth
-  namespace: default
+  namespace: JSVAR_NAMESPACE
 spec:
   accessModes:
     - ReadWriteOnce
@@ -34,7 +40,7 @@ metadata:
   name: mysqlauth
   labels:
     app: mysqlauth
-  namespace: default
+  namespace: JSVAR_NAMESPACE
 spec:
   selector:
     matchLabels:
@@ -51,7 +57,7 @@ spec:
         name: mysqlauth
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: "Philipp1"
+          value: JSVAR_BA_DBPSWD
         ports:
         - containerPort: 3306
           name: mysqlauth
