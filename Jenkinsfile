@@ -22,7 +22,7 @@ pipeline {
     stage("Load config") {
       steps {
         script {
-          load "${customer_groovy}.groovy"
+          load "${base_groovy}.groovy"
           echo "${env.BA_CUSTOMER}"
           echo "${env.BA_DBNAME}"
           echo "${env.BA_DBUSER}"
